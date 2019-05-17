@@ -1,6 +1,6 @@
 import json
 
-def calculadora(numero_uno,numero_dos,operacion="sumar"):
+def CRUD_consolas(operacion):
 
     def crear_archivo():
         contenido = {
@@ -14,8 +14,9 @@ def calculadora(numero_uno,numero_dos,operacion="sumar"):
         except Exception as error:
             return False
 
-    def leer_archivo():        
-        if crear_archivo():
+    def leer_archivo():
+        existe_archivo = crear_archivo()                
+        if existe_archivo:
             crear_archivo()
             return 'archivo creado'
         else:                
@@ -27,15 +28,12 @@ def calculadora(numero_uno,numero_dos,operacion="sumar"):
             except Exception as error:                
                 return False
 
-    def escribir_archivo(registro):    
-        print("mi regitro",registro)    
-        contenido = leer_archivo()  
+    def escribir_archivo(contenido):                        
         if contenido:
-            try:                                               
-                contenido['consolas'].append(registro)                
+            try:                                                                             
                 archivo_escribir = open("./prueba.json","w") # r por defecto                
-                nuevo_registro = json.dumps(contenido)                
-                archivo_escribir.write(nuevo_registro)
+                nuevo_contenido = json.dumps(contenido)                
+                archivo_escribir.write(nuevo_contenido)
                 archivo_escribir.close()
                 return 'registro creado'                
             except Exception as error:                
@@ -56,7 +54,9 @@ def calculadora(numero_uno,numero_dos,operacion="sumar"):
             "consola":consola,
             "precio":precio
         }
-        escribir_archivo(registro)
+        contenido = leer_archivo()
+        contenido['consolas'].append(registro)  
+        escribir_archivo(contenido)
         return "registro creado"
 
 
@@ -64,17 +64,55 @@ def calculadora(numero_uno,numero_dos,operacion="sumar"):
         contenido = leer_archivo()
         if contenido:
             for consola in contenido['consolas']:
-                print('Empresa: ',consola["empresa"] ,'-','Consola:',consola["consola"],'-','Precio:',consola["precio"])
+                print('Empresa: ',consola["empresa"] ,'-','Consola:',consola["consola"],'-','Precio:',consola["precio"])                
         else:
-            print('error')        
-        
+            print('error')      
+            return False
 
-    def operacionesCalculadora():
+
+    def eliminar_registro():
+        print('Ingrese el nombre de la consola a eliminar')
+        nombre_consola = input()
+        contenido = leer_archivo()
+        for inidice, consola in enumerate(contenido['consolas']):            
+            existe_consola = consola['consola'] == nombre_consola
+            if existe_consola: 
+                contenido['consolas'].pop(inidice)
+                escribir_archivo(contenido)
+                break
+        return "registro eliminado"
+
+    def modificar_registro():
+        print('Ingrese el nombre de la consola a eliminar')
+        nombre_consola = input()
+        contenido = leer_archivo()
+        for inidice, consola in enumerate(contenido['consolas']):            
+            existe_consola = consola['consola'] == nombre_consola
+            if existe_consola: 
+                print("Nombre de la empresa")
+                empresa = input()        
+                print("Nombre de la consola")
+                consola = input()        
+                print("Precio de la consola")
+                precio = input()        
+                registro = {
+                    "empresa":empresa,
+                    "consola":consola,
+                    "precio":precio
+                }
+                contenido['consolas'][inidice] = registro
+                escribir_archivo(contenido)
+                return "registro EDITADO"
+
+    def operaciones_CRUD():
         return{            
-            "crear_archivo":listar_registros()
+            1:crear_registro(),
+            2:listar_registros(),
+            3:eliminar_registro(),
+            4:modificar_registro()
         }[operacion]
 
-    return operacionesCalculadora()
+    return operaciones_CRUD()
 
 
-print(calculadora(2,3,'crear_archivo'))
+print(CRUD_consolas(2))
