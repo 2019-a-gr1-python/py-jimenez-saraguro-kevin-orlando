@@ -52,7 +52,7 @@ for tipo,personaje in  grupo_personajes:
 
 # Plot
 plt.pie(total_personajes_alive,labels=arreglo_alive,
-autopct='%1.1f%%')
+autopct='%1.2f%%')
 plt.legend(arreglo_alive)
 plt.axis('equal')
 plt.show()
