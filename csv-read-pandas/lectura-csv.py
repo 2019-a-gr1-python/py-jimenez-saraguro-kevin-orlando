@@ -75,27 +75,59 @@ plt.show()
 
 
 grupo_personajes_anio = contenido_archivo_csv_DCComics.groupby(["YEAR","GSM","SEX"])['name'].apply(list)
-print(type(grupo_personajes_anio),grupo_personajes_anio)
-"""
-total_mecos_90 = 0
-total_mecos_2000 = 0
-contador = 0
+df_personaje_anio = pd.DataFrame(grupo_personajes_anio)
+
+
+total_mecos_90_bi = 0
+total_mecos_90_ho = 0
+total_mecos_2000_bi = 0
+total_mecos_2000_ho = 0
+total_mecos_2010_bi = 0
+total_mecos_2010_ho = 0
 for index,personajes in enumerate(grupo_personajes_anio.items()):
     
-    if (personajes[0][0] < 1990 and personajes[0][1] == 'Bisexual Characters'):
-        total_mecos_90 = len(personajes[1]) + total_mecos_90
-        print(personajes[0][0])
-        
-    elif (personajes[0][0] > 1990 and personajes[0][0] < 2000 and personajes[0][1] == 'Bisexual Characters'):
-        total_mecos_2000 = len(personajes[1]) + total_mecos_2000
-        print(personajes[0][0])
-    else:
-        contador = len(personajes[1]) + contador        
-        print(personajes[0][0])
+    if (personajes[0][0] < 1990): 
+        if (personajes[0][1] == 'Bisexual Characters'):
+            total_mecos_90_bi = len(personajes[1]) + total_mecos_90_bi            
+        else:
+            total_mecos_90_ho = len(personajes[1]) + total_mecos_90_ho
             
-print(total_mecos_90)
-print(total_mecos_2000)
-print(contador)  
+    if (personajes[0][0] > 1990 and personajes[0][0] < 2000): 
+        if (personajes[0][1] == 'Bisexual Characters'):
+            total_mecos_2000_bi = len(personajes[1]) + total_mecos_2000_bi            
+        else:
+            total_mecos_2000_ho = len(personajes[1]) + total_mecos_2000_ho
+    
+    if (personajes[0][0] < 2000): 
+        if (personajes[0][1] == 'Bisexual Characters'):
+            total_mecos_2010_bi = len(personajes[1]) + total_mecos_2010_bi            
+        else:
+            total_mecos_2010_ho = len(personajes[1]) + total_mecos_2010_ho
+    
+        
+print(total_mecos_90_bi)
+print(total_mecos_90_ho)
+print(total_mecos_2000_bi)
+print(total_mecos_2000_ho)
+print(total_mecos_2010_bi)
+print(total_mecos_2010_ho)
+anios = ['< 1990','1900 - 2000','2000 >',]
+datos_personajes = [[total_mecos_90_bi,total_mecos_90_ho],[total_mecos_2000_bi,total_mecos_2000_bi],[total_mecos_2010_bi,total_mecos_2010_bi]]
+print(datos_personajes[0])
+#index = np.arange(3)
+#plt.bar(index, datos_personajes[0], color = "b", width = 0.25)
+#plt.bar(index, datos_personajes[1], color = "g", width = 0.25)
+#plt.bar(index, datos_personajes[2], color = "r", width = 0.25)
+#plt.xticks(index, anios, fontsize=5, rotation=90)
+#plt.title('Numero de personajes por bando y genero de DC Comics')
+#plt.show()
 
-"""    
+
+datos = [[1, 2, 3], [3, 5, 3], [8, 6, 4]]
+X = np.arange(4)
+plt.bar(X + 0.00, datos[0], color = "b", width = 0.25)
+plt.bar(X + 0.25, datos[1], color = "g", width = 0.25)
+plt.bar(X + 0.50, datos[2], color = "r", width = 0.25)
+plt.xticks(X+0.38, ["A","B","C","D"])
+
 #print(grupo_personajes_anio)
